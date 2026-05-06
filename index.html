@@ -7,22 +7,328 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; color: #333; }
-  .header { background: linear-gradient(135deg, #0a5c9e, #ff6f00); color: white; padding: 20px; border-radius: 10px; margin-bottom: 30px; }
-  .logo { font-size: 32px; font-weight: bold; color: #ff6f00; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+  * { box-sizing: border-box; }
+  
+  /* Mobile First - Override Bootstrap */
+  @media (max-width: 576px) {
+    .col-sm-6,
+    .col-md-6 {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+      padding-right: 0.5rem !important;
+      padding-left: 0.5rem !important;
+    }
+  }
+  
+  body { 
+    font-family: 'Roboto', sans-serif; 
+    background-color: #f8f9fa; 
+    color: #333; 
+    padding: 10px;
+  }
+  
+  .container-fluid { padding: 0 5px; }
+  
+  .header { 
+    background: linear-gradient(135deg, #0a5c9e, #ff6f00); 
+    color: white; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .logo { 
+    font-size: 28px; 
+    font-weight: bold; 
+    color: #ff6f00; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
+  }
+  
   .logo span { color: #ffd700; }
-  .form-control { border: none; border-bottom: 2px solid #ddd; border-radius: 0; padding: 10px 0; margin-bottom: 15px; background: transparent; }
-  .form-control:focus { border-bottom-color: #0a5c9e; box-shadow: none; }
-  .table { margin-top: 20px; border-radius: 10px; overflow: hidden; }
-  .table th { background: #0a5c9e; color: white; }
-  .total { text-align: right; font-weight: bold; font-size: 1.2em; margin-top: 20px; }
-  .assinatura { margin-top: 60px; }
-  .linha-ass { border-top: 2px solid #333; width: 100%; text-align: center; padding-top: 10px; font-weight: 500; }
-  .btn-primary { background: #0a5c9e; border: none; padding: 12px 30px; border-radius: 25px; font-weight: 500; transition: all 0.3s; }
-  .btn-primary:hover { background: #084a7a; transform: translateY(-2px); }
-  .card { border: none; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 15px; }
-  .card-body { padding: 30px; }
-  h2 { color: #0a5c9e; text-align: center; margin-bottom: 30px; }
+  
+  .company-info {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  
+  .company-info div {
+    margin: 3px 0;
+  }
+  
+  .form-label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  
+  .form-control { 
+    border: none; 
+    border-bottom: 2px solid #ddd; 
+    border-radius: 0; 
+    padding: 8px 0; 
+    margin-bottom: 12px; 
+    background: transparent;
+    font-size: 14px;
+  }
+  
+  .form-control:focus { 
+    border-bottom-color: #0a5c9e; 
+    box-shadow: none; 
+  }
+  
+  .form-control::placeholder {
+    font-size: 12px;
+  }
+  
+  textarea.form-control {
+    font-size: 13px;
+  }
+  
+  .table { 
+    margin-top: 15px; 
+    border-radius: 8px; 
+    overflow: hidden;
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+  
+  .table th { 
+    background: #0a5c9e; 
+    color: white;
+    padding: 8px 4px;
+    font-weight: 600;
+  }
+  
+  .table td {
+    padding: 6px 4px;
+  }
+  
+  .table input {
+    font-size: 11px;
+  }
+  
+  .total { 
+    text-align: right; 
+    font-weight: bold; 
+    font-size: 1.1em; 
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .total input {
+    font-size: 14px;
+    max-width: 100px;
+  }
+  
+  .assinatura { 
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .linha-ass { 
+    border-top: 2px solid #333; 
+    width: 100%; 
+    text-align: center; 
+    padding-top: 8px; 
+    font-weight: 500;
+    font-size: 12px;
+    min-height: 50px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  
+  .btn-primary { 
+    background: #0a5c9e; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 25px; 
+    font-weight: 500; 
+    transition: all 0.3s;
+    font-size: 13px;
+  }
+  
+  .btn-primary:hover { 
+    background: #084a7a; 
+    transform: translateY(-2px); 
+  }
+  
+  .btn-sm {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  
+  .btn-success {
+    font-size: 13px;
+  }
+  
+  .card { 
+    border: none; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    border-radius: 12px; 
+  }
+  
+  .card-body { 
+    padding: 15px;
+  }
+  
+  h2 { 
+    color: #0a5c9e; 
+    text-align: center; 
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .text-center button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .text-center button:last-child {
+    margin-bottom: 0;
+  }
+  
+  .ms-2 {
+    margin-left: 0 !important;
+  }
+  
+  /* MEDIA QUERIES PARA MOBILE */
+  @media (max-width: 576px) {
+    body { padding: 8px; }
+    
+    .container-fluid { padding: 0; }
+    
+    .card-body { padding: 12px; }
+    
+    .header {
+      padding: 12px;
+      margin-bottom: 15px;
+      flex-direction: column;
+    }
+    
+    .logo {
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    
+    .company-info {
+      text-align: center;
+      font-size: 11px;
+    }
+    
+    .row.mb-3 {
+      margin-bottom: 8px !important;
+    }
+    
+    .form-label {
+      font-size: 12px;
+    }
+    
+    .form-control {
+      padding: 6px 0;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    
+    .row > .col-sm-6,
+    .row > .col-md-6,
+    .col-sm-6,
+    .col-md-6 {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+    }
+    
+    .table {
+      font-size: 11px;
+      margin-top: 10px;
+    }
+    
+    .table th {
+      padding: 6px 3px;
+      font-size: 10px;
+    }
+    
+    .table td {
+      padding: 4px 2px;
+    }
+    
+    .table input {
+      font-size: 10px;
+      padding: 4px !important;
+    }
+    
+    .total {
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    
+    .total input {
+      max-width: 80px;
+      font-size: 13px;
+    }
+    
+    .assinatura {
+      margin-top: 30px;
+    }
+    
+    .linha-ass {
+      padding-top: 6px;
+      font-size: 11px;
+      min-height: 40px;
+    }
+    
+    .btn-primary, .btn-success {
+      font-size: 12px;
+      padding: 8px 16px;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    
+    .btn-sm {
+      font-size: 11px;
+      padding: 5px 10px;
+    }
+    
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .mt-4 {
+      margin-top: 12px !important;
+    }
+    
+    .ms-2 {
+      margin-left: 0 !important;
+      margin-top: 8px;
+    }
+  }
+  
+  /* MEDIA QUERIES PARA TABLET */
+  @media (min-width: 577px) and (max-width: 768px) {
+    .card-body { padding: 20px; }
+    
+    .header {
+      padding: 15px;
+    }
+    
+    .logo {
+      font-size: 26px;
+    }
+    
+    .company-info {
+      font-size: 12px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -31,9 +337,9 @@
     <div class="col-lg-10 col-xl-8">
       <div class="card" id="recibo-content">
         <div class="card-body">
-          <div class="header d-flex justify-content-between align-items-center">
+          <div class="header">
             <div class="logo">⚡ ELETRO<span>PORTO</span></div>
-            <div class="company-info text-end">
+            <div class="company-info">
               <div><strong>Telefone:</strong> (11) 95999-0780</div>
               <div><strong>Endereço:</strong> Rua Amaralina, Vila São Nicolau, Jandira, SP</div>
               <div><strong>CEP:</strong> 06620-000</div>
@@ -43,11 +349,11 @@
           <h2>RECIBO</h2>
 
           <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <label for="recibo-num" class="form-label">Recibo Nº:</label>
               <input type="text" id="recibo-num" class="form-control" placeholder="001">
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <label for="data" class="form-label">Data:</label>
               <input type="date" id="data" class="form-control">
             </div>
@@ -59,22 +365,22 @@
           </div>
 
           <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <label for="cpf" class="form-label">CPF/CNPJ:</label>
               <input type="text" id="cpf" class="form-control" placeholder="000.000.000-00">
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <label for="endereco" class="form-label">Endereço:</label>
               <input type="text" id="endereco" class="form-control" placeholder="Rua, número, bairro, cidade">
             </div>
           </div>
 
           <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <label for="valor" class="form-label">Valor De Serviço: R$</label>
               <input type="text" id="valor" class="form-control" placeholder="0,00">
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <label for="extenso" class="form-label">Valor Por extenso: ex "Dez Reais"</label>
               <input type="text" id="extenso" class="form-control" placeholder="">
             </div>
@@ -108,17 +414,17 @@
           <div class="total">TOTAL GERAL: R$ <input type="text" class="form-control d-inline-block w-auto border-0" placeholder="0,00"></div>
 
           <div class="assinatura row">
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <div class="linha-ass">Assinatura do Emissor</div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <div class="linha-ass">Assinatura do Cliente</div>
             </div>
           </div>
 
           <div class="text-center mt-4">
             <button class="btn btn-primary" onclick="downloadPDF()">Baixar PDF</button>
-            <button class="btn btn-success ms-2" id="btn-whatsapp">📱 Enviar por WhatsApp</button>
+            <button class="btn btn-success" id="btn-whatsapp">📱 Enviar por WhatsApp</button>
           </div>
         </div>
       </div>
