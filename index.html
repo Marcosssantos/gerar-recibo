@@ -365,10 +365,7 @@
             </div>
           </div>
 
-          <div class="mb-3">
-            <label for="cliente" class="form-label">Recebi de:</label>
-            <input type="text" id="cliente" class="form-control" placeholder="Nome do cliente">
-          </div>
+
           <div class="row mb-3">
             <div class="col-sm-6">
               <label for="cpf" class="form-label">CPF/CNPJ:</label>
@@ -382,6 +379,10 @@
               <label for="endereco" class="form-label">Endereço:</label>
               <input type="text" id="endereco" class="form-control" placeholder="Rua, número, bairro, cidade">
             </div>
+                      <div class="mb-3">
+            <label for="cliente" class="form-label">Recebi de:</label>
+            <input type="text" id="cliente" class="form-control" placeholder="Nome do cliente">
+          </div>
           </div>
 
           <div class="mb-3">
@@ -405,7 +406,7 @@
             </thead>
             <tbody id="tabela-itens">
               <tr class="item-row">
-                <td><input type="text" class="form-control border-0" placeholder="Descrever o serviço ou produto"></td>
+                <td><input type="text" class="form-control border-0" placeholder="*"></td>
                 <td><input type="number" class="form-control border-0 qty-input" placeholder="1"></td>
                 <td><input type="text" class="form-control border-0 valor-input" placeholder="0,00"></td>
                 <td><input type="text" class="form-control border-0 total-input" placeholder="0,00" readonly></td>
@@ -482,7 +483,7 @@
     tabela.appendChild(newRow);
   });
 
-  // Enviar por WhatsApp
+  // Enviar por WhatsApp com PDF
 document.getElementById('btn-whatsapp').addEventListener('click', function() {
   const cliente = document.getElementById('cliente').value || 'Cliente';
   const recibo = document.getElementById('recibo-num').value || '001';
@@ -522,8 +523,50 @@ document.getElementById('btn-whatsapp').addEventListener('click', function() {
     `${itens}\n` +
     `⚡ Eletroporto`;
 
-  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
-  window.open(url, '_blank');
+  // Gerar PDF
+  const element = document.getElementById('recibo-content');
+  const opt = {
+    margin: 0.4,
+    filename: `recibo-${recibo}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+    const pdfBlob = pdf.output('blob');
+    const pdfFile = new File([pdfBlob], `recibo-${recibo}.pdf`, { type: 'application/pdf' });
+
+    // Tentar compartilhar com File API (mobile)
+    if (navigator.share) {
+      navigator.share({
+        title: `Recibo ${recibo}`,
+        text: mensagem,
+        files: [pdfFile]
+      }).catch(err => {
+        // Se falhar, abrir whatsapp com mensagem
+        const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+        window.open(url, '_blank');
+      });
+    } else {
+      // Desktop: fazer download do PDF e depois abrir WhatsApp
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `recibo-${recibo}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // Abrir WhatsApp
+      setTimeout(() => {
+        const whatsappUrl = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+        window.open(whatsappUrl, '_blank');
+        alert('PDF baixado! Você pode agora anexar o arquivo no WhatsApp que será aberto.');
+      }, 500);
+    }
+  });
 });
 </script>
 </body>
